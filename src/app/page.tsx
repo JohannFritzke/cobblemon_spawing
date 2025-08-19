@@ -1,6 +1,8 @@
 import { Header } from "@/components/header";
 import { supabase } from "../lib/supabaseClient";
 import { PokeCards } from "@/components/pokemon_card";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { PokemonContent } from "@/components/pokemon_dialog_content";
 
 export default async function Home() {
   const { data: pokemon, error } = await supabase.from("pokemon").select("*");
@@ -12,7 +14,12 @@ export default async function Home() {
       <Header />
       <main className="grid grid-cols-8 gap-4 p-6 place-items-center z-0">
         {pokemon.map((p) => (
-          <PokeCards pokemon={p} key={p.id} />
+          <Dialog key={p.id}>
+            <DialogTrigger>
+              <PokeCards pokemon={p} />
+            </DialogTrigger>
+            <PokemonContent pokemon={p}/>
+          </Dialog>
         ))}
       </main>
     </div>
